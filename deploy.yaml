@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-cli-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-cli-app
+  template:
+    metadata:
+      labels:
+        app: azure-cli-app
+    spec:
+      containers:
+      - name: azure-cli-container
+        image: azure-cli-container:1
+        env:
+        - name: AZ_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: azure-cli-secret
+              key: AZ_USERNAME
+        - name: AZ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: azure-cli-secret
+              key: AZ_PASSWORD
+        - name: AZ_TENANT
+          valueFrom:
+            secretKeyRef:
+              name: azure-cli-secret
+              key: AZ_TENANT
+        command: ["/bin/bash", "-c", "--"]
+        args: [
+          "az login --service-principal --username $AZ_USERNAME --password $AZ_PASSWORD --tenant $AZ_TENANT && \
+           az aks get-credentials --resource-group ned-test --name ned-cluster && /bin/bash"
+        ]
+      restartPolicy: Always

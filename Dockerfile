@@ -14,21 +14,8 @@ RUN apt-get update && \
 # 기본 작업 디렉토리 설정
 WORKDIR /workspace
 
-# kubectl install
+# kubectl 설치
 RUN az aks install-cli
-
-# az cli 로그인
-# 환경 변수를 사용하여 로그인 정보 설정
-ARG AZ_USERNAME
-ARG AZ_PASSWORD
-ARG AZ_TENANT
-
-# Azure 로그인 실행
-RUN az login --service-principal --username $AZ_USERNAME --password $AZ_PASSWORD --tenant $AZ_TENANT
-
-
-# kube-config 받아옴
-RUN az aks get-credentials --resource-group ned-test --name ned-cluster
 
 # 컨테이너 시작 시 bash 실행
 CMD ["/bin/bash"]

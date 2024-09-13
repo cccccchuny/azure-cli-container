@@ -34,6 +34,6 @@ spec:
         command: ["/bin/bash", "-c", "--"]
         args: [
           "az login --service-principal --username $AZ_USERNAME --password $AZ_PASSWORD --tenant $AZ_TENANT && \
-           az aks get-credentials --resource-group ned-test --name ned-cluster && /bin/bash"
+           az aks get-credentials --resource-group ned-test --name ned-cluster && sleep infinity"
         ]
       restartPolicy: Always
